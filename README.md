@@ -10,6 +10,7 @@ too low, if you have a lot of writes come in to the master that are then sent
 to the slave, Seconds_Behind_Master can jump to a large number, taking your
 slave out of the listening pool.
 
+
 Instructions:
 
 The Perl modules you will need are AnyEvent::HTTPD and DBD::MySQL, you can
@@ -25,14 +26,19 @@ suggest you use REPLICATION CLIENT rather than SUPER for security reasons. To
 install this user run the following commands as root on mysql:
 
 mysql> CREATE USER 'health_chk'@'localhost' IDENTIFIED BY 'password';
+
 mysql> GRANT PROCESS, REPLICATION CLIENT ON *.* to 'health_chk'@'localhost';
+
 mysql> CREATE DATABASE dummy;
+
 mysql> GRANT SELECT on dummy.* TO 'health_chk'@'localhost';
+
 
 Usage:
 
 HAProxy should be relaying a TCP connection with an HTTP health check to the
 listening host on the listening address set at the top of replication-check.pl
+
 
 Contact:
 
