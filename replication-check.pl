@@ -13,7 +13,7 @@ use DBD::mysql;
 #use Data::Dumper;
 
 # Slave connection information
-my $dbs_host = '10.0.0.30';
+my $dbs_host = 'localhost';
 my $dbs_user = 'host_chk';
 my $dbs_pass = 'password';
 my $dbs_port = '3306';
@@ -49,7 +49,7 @@ $httpd->reg_cb (
 		# Check is SQL thread is running, if not error
 		if ($slave_result->{Slave_SQL_Running} ne 'Yes') {
 			$req->respond([503, 'SERVICE UNAVAILABLE', {'Content-Type' => 'text/html'},
-			"<h1>503 - Slave SQL not running, did you run STOP SLAVE; ?</h1>"]);
+			'<h1>503 - Slave SQL not running, did you run STOP SLAVE; ?</h1>']);
 		}
 
 		# http://dev.mysql.com/doc/refman/5.5/en/start-slave.html
@@ -64,7 +64,7 @@ $httpd->reg_cb (
 		# might be an unnecessary check
 		if (!defined($slave_result->{Seconds_Behind_Master})) {
 			$req->respond([503, 'SERVICE UNAVAILABLE', {'Content-Type' => 'text/html'},
-			"<h1>503 - Slave is not connected to the master</h1>"]);
+			'<h1>503 - Slave is not connected to the master</h1>']);
 		}
 
 		# Check for maximum seconds_behind_slave, may need to average it out some how because of big writes
